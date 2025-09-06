@@ -1,0 +1,7 @@
+name: GokuApp
+debug: true
+timezone: Asia/Jakarta
+locale: id
+
+server:
+  port: 8000

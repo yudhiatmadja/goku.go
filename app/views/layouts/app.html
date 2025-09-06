@@ -1,0 +1,15 @@
+{{define "app"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}} - Goku Framework</title>
+</head>
+<body>
+    {{template "navbar" .}}
+    <main>
+        {{template "content" .}}
+    </main>
+</body>
+</html>
+{{end}}
