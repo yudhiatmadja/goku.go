@@ -1,11 +1,14 @@
 package bootstrap
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/go-chi/chi/v5"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -52,10 +55,27 @@ func (app *Application) initConfig() {
 }
 
 func (app *Application) initDB() {
-	// Contoh koneksi DB dari config (perlu setup database.yaml)
-	// dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
-	// Untuk sekarang, kita hardcode dulu
-	dsn := "root:@tcp(127.0.0.1:3306)/goku_db?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := app.Config.GetString("database.dsn")
+	dbName := app.Config.GetString("database.name")
+
+	if dsn == "" || dbName == "" {
+		log.Fatalf("Database configuration is missing in config/app.yaml")
+	}
+
+	// Create database if it doesn't exist
+	dsnWithoutDB := strings.Replace(dsn, "/"+dbName, "/", 1)
+	sqlDB, err := sql.Open("mysql", dsnWithoutDB)
+	if err != nil {
+		log.Fatalf("Failed to open connection to MySQL server: %v", err)
+	}
+	defer sqlDB.Close()
+
+	_, err = sqlDB.Exec("CREATE DATABASE IF NOT EXISTS " + dbName)
+	if err != nil {
+		log.Fatalf("Failed to create database: %v", err)
+	}
+
+	// Connect to the database
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)

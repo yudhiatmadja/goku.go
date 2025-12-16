@@ -1,8 +1,8 @@
 package middleware
 
 import (
-    "fmt"
     "net/http"
+    "runtime/debug"
     "github.com/sirupsen/logrus"
 )
 

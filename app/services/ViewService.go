@@ -1,44 +1,59 @@
 package services
 
 import (
-    "bytes"
-    "html/template"
-    "io"
-    "log"
-    "net/http"
-    "path/filepath"
+	"bytes"
+	"html/template"
+	
+	"log"
+	"net/http"
+	"path/filepath"
 )
 
+// View struct now holds the paths to be parsed on each render.
 type View struct {
-    Template *template.Template
+	paths []string
 }
 
+// NewViewService now only gathers the template paths and stores them.
 func NewViewService(viewPaths ...string) *View {
-    // Tambahkan path default untuk layouts dan components
-    paths := []string{"app/views/layouts/", "app/views/components/"}
-    paths = append(paths, viewPaths...)
+	// Tambahkan path default untuk layouts dan components
+	allPaths := []string{"app/views/layouts/", "app/views/components/"}
+	allPaths = append(allPaths, viewPaths...)
 
-    var allFiles []string
-    for _, path := range paths {
-        files, err := filepath.Glob(filepath.Join(path, "*.html"))
-        if err != nil {
-            log.Fatalf("Failed to glob templates: %v", err)
-        }
-        allFiles = append(allFiles, files...)
-    }
-
-    tmpl := template.Must(template.ParseFiles(allFiles...))
-
-    return &View{Template: tmpl}
+	return &View{paths: allPaths}
 }
 
-func (v *View) Render(w io.Writer, name string, data interface{}) error {
-    // Buat buffer untuk menangkap error sebelum menulis ke response
-    buf := new(bytes.Buffer)
-    err := v.Template.ExecuteTemplate(buf, name, data)
-    if err != nil {
-        return err
-    }
-    _, err = buf.WriteTo(w)
-    return err
+// Render now parses templates on every call, enabling live reload.
+func (v *View) Render(w http.ResponseWriter, name string, data interface{}) {
+	var allFiles []string
+	for _, path := range v.paths {
+		files, err := filepath.Glob(filepath.Join(path, "*.html"))
+		if err != nil {
+			log.Printf("Error globbing templates: %v", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		allFiles = append(allFiles, files...)
+	}
+
+	tmpl, err := template.ParseFiles(allFiles...)
+	if err != nil {
+		log.Printf("Error parsing templates: %v", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	buf := new(bytes.Buffer)
+	err = tmpl.ExecuteTemplate(buf, name, data)
+	if err != nil {
+		log.Printf("Error executing template: %v", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	_, err = buf.WriteTo(w)
+	if err != nil {
+		log.Printf("Error writing response: %v", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
 }

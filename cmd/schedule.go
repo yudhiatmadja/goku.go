@@ -13,7 +13,7 @@ var scheduleRunCmd = &cobra.Command{
         c := cron.New()
         console.RegisterScheduledTasks(c)
         c.Start()
-        select {} // Block forever
+        select {} 
     },
 }
 

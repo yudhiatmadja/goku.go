@@ -1,0 +1,28 @@
+# .air.toml
+# Konfigurasi untuk `air` live-reloading.
+
+# Direktori root proyek Anda.
+root = "."
+tmp_dir = "storage/app"
+
+[build]
+# Perintah untuk build aplikasi Anda.
+cmd = "go build -o ./storage/app/main ."
+# Binary yang akan dijalankan. Perhatikan argumen 'serve'.
+bin = "./storage/app/main serve"
+
+# Ekstensi file yang akan dipantau perubahannya.
+include_ext = ["go", "html", "css", "js"]
+# Direktori yang diabaikan.
+exclude_dir = ["vendor", "node_modules"]
+
+# Atur 'true' agar `air` merespon perubahan file dengan lebih cepat.
+delay = 0 
+
+[log]
+# Menampilkan log waktu.
+time = true
+
+[misc]
+# Hapus file binary setelah proses selesai.
+clean_on_exit = true

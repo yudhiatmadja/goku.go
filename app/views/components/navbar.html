@@ -1,6 +1,199 @@
 {{define "navbar"}}
-<nav>
-    <a href="/">Home</a> | <a href="/users">Users</a>
+<style>
+    .goku-navbar {
+        position: relative;
+        background: rgba(5, 8, 16, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(0, 173, 216, 0.1);
+        padding: 0;
+        font-family: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+    }
+    
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        transition: transform 0.3s ease;
+    }
+    
+    .navbar-brand:hover {
+        transform: translateX(4px);
+    }
+    
+    .brand-logo {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #00ADD8, #5DC9E2);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 18px;
+        font-weight: 700;
+        color: #050810;
+    }
+    
+    .brand-text {
+        font-size: 1.25rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, #E2E8F0, #5DC9E2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.5px;
+    }
+    
+    .navbar-links {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+    
+    .nav-link {
+        position: relative;
+        color: #94A3B8;
+        text-decoration: none;
+        padding: 8px 20px;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        letter-spacing: 0.3px;
+    }
+    
+    .nav-link:hover {
+        color: #E2E8F0;
+        background: rgba(0, 173, 216, 0.08);
+    }
+    
+    .nav-link.active {
+        color: #00ADD8;
+        background: rgba(0, 173, 216, 0.12);
+    }
+    
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #00ADD8, transparent);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+    
+    .nav-link:hover::after {
+        width: 80%;
+    }
+    
+    .nav-divider {
+        width: 1px;
+        height: 20px;
+        background: rgba(0, 173, 216, 0.2);
+        margin: 0 4px;
+    }
+    
+    /* Mobile Menu Toggle */
+    .mobile-toggle {
+        display: none;
+        background: none;
+        border: 1px solid rgba(0, 173, 216, 0.2);
+        color: #00ADD8;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.25rem;
+        transition: all 0.3s ease;
+    }
+    
+    .mobile-toggle:hover {
+        background: rgba(0, 173, 216, 0.08);
+        border-color: rgba(0, 173, 216, 0.4);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .navbar-container {
+            padding: 16px 24px;
+            flex-wrap: wrap;
+        }
+        
+        .mobile-toggle {
+            display: block;
+        }
+        
+        .navbar-links {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(0, 173, 216, 0.1);
+        }
+        
+        .navbar-links.active {
+            display: flex;
+        }
+        
+        .nav-link {
+            width: 100%;
+            text-align: left;
+            padding: 12px 16px;
+        }
+        
+        .nav-divider {
+            display: none;
+        }
+    }
+</style>
+
+<nav class="goku-navbar">
+    <div class="navbar-container">
+        <a href="/" class="navbar-brand">
+            <div class="brand-logo">G</div>
+            <span class="brand-text">Goku</span>
+        </a>
+        
+        <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+        
+        <div class="navbar-links" id="navbarLinks">
+            <a href="/" class="nav-link active">Home</a>
+            <div class="nav-divider"></div>
+            <a href="/users" class="nav-link">Users</a>
+        </div>
+    </div>
 </nav>
-<hr>
+
+<script>
+    function toggleMobileMenu() {
+        const navLinks = document.getElementById('navbarLinks');
+        navLinks.classList.toggle('active');
+    }
+    
+    // Set active link based on current path
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>
 {{end}}

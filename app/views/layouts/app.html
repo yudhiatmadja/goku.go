@@ -3,7 +3,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Title}} - Goku Framework</title>
+    <meta name="description" content="Goku Framework - A modern Go web framework built for simplicity, performance, and elegant code">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        main {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     {{template "navbar" .}}

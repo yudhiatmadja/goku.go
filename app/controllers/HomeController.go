@@ -20,5 +20,5 @@ func (c *HomeController) Index(w http.ResponseWriter, r *http.Request) {
         "Title": "Homepage",
         "Name":  "Goku User",
     }
-    c.View.Render(w, "home.html", data)
+    c.View.Render(w, "app", data)
 }

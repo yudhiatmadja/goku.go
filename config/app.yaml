@@ -5,3 +5,8 @@ locale: id
 
 server:
   port: 8000
+
+database:
+  driver: mysql
+  dsn: "root:@tcp(127.0.0.1:3306)/goku_db?charset=utf8mb4&parseTime=True&loc=Local"
+  name: "goku_db"
