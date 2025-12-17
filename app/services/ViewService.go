@@ -16,7 +16,6 @@ type View struct {
 
 // NewViewService now only gathers the template paths and stores them.
 func NewViewService(viewPaths ...string) *View {
-	// Tambahkan path default untuk layouts dan components
 	allPaths := []string{"app/views/layouts/", "app/views/components/"}
 	allPaths = append(allPaths, viewPaths...)
 
@@ -44,7 +43,7 @@ func (v *View) Render(w http.ResponseWriter, name string, data interface{}) {
 	}
 
 	buf := new(bytes.Buffer)
-	err = tmpl.ExecuteTemplate(buf, name, data)
+	err = tmpl.ExecuteTemplate(buf, "app", data)
 	if err != nil {
 		log.Printf("Error executing template: %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)

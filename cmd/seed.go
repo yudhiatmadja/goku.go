@@ -24,5 +24,5 @@ var dbSeedCmd = &cobra.Command{
 }
 
 func init() {
-    rootCmd.AddCommand(dbSeedCmd)
+    RootCmd.AddCommand(dbSeedCmd)
 }

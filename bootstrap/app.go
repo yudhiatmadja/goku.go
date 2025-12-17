@@ -12,6 +12,8 @@ import (
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+
+	"goku-framework/database"
 )
 
 var Router *chi.Mux
@@ -81,6 +83,7 @@ func (app *Application) initDB() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 	app.DB = db
+	database.DB = db
 }
 
 func (app *Application) initRouter() {

@@ -24,5 +24,5 @@ var queueWorkCmd = &cobra.Command{
 }
 
 func init() {
-    rootCmd.AddCommand(queueWorkCmd)
+    RootCmd.AddCommand(queueWorkCmd)
 }

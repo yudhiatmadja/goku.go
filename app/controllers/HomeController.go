@@ -10,15 +10,52 @@ type HomeController struct {
 }
 
 func NewHomeController() *HomeController {
-    // Path ke folder pages
     viewService := services.NewViewService("app/views/pages/")
     return &HomeController{View: viewService}
 }
 
 func (c *HomeController) Index(w http.ResponseWriter, r *http.Request) {
+
     data := map[string]interface{}{
+
         "Title": "Homepage",
+
         "Name":  "Goku User",
+
     }
-    c.View.Render(w, "app", data)
+
+    c.View.Render(w, "home.html", data)
+
+}
+
+
+
+// Installation renders the installation page.
+
+func (c *HomeController) Installation(w http.ResponseWriter, r *http.Request) {
+
+	data := map[string]interface{}{
+
+		"Title": "Installation",
+
+	}
+
+	c.View.Render(w, "installation.html", data)
+
+}
+
+
+
+// Docs renders the documentation page.
+
+func (c *HomeController) Docs(w http.ResponseWriter, r *http.Request) {
+
+	data := map[string]interface{}{
+
+		"Title": "Documentation",
+
+	}
+
+	c.View.Render(w, "docs.html", data)
+
 }

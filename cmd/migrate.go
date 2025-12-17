@@ -1,30 +1,30 @@
 package cmd
 
 import (
-    "fmt"
-    "goku-framework/app/models"
-    "goku-framework/bootstrap"
-    "github.com/spf13/cobra"
+	"fmt"
+	"goku-framework/bootstrap"
+	"goku-framework/database"
+
+	"github.com/spf13/cobra"
+
+	// Blank import to ensure init() functions in migrations are run
+	// _ "goku-framework/database/migrations"
 )
 
 var migrateCmd = &cobra.Command{
-    Use:   "migrate",
-    Short: "Run database migrations",
-    Run: func(cmd *cobra.Command, args []string) {
-        app := bootstrap.NewApp() // Hanya untuk koneksi DB
-        fmt.Println("Running migrations...")
-        
-        // Daftarkan semua model di sini
-        err := app.DB.AutoMigrate(&models.User{})
-        if err != nil {
-            fmt.Println("Migration failed:", err)
-            return
-        }
+	Use:   "migrate",
+	Short: "Run database migrations based on migration files",
+	Run: func(cmd *cobra.Command, args []string) {
+		// bootstrap.NewApp() also initializes the database connection
+		app := bootstrap.NewApp()
 
-        fmt.Println("Migration completed successfully.")
-    },
+		if err := database.RunMigrations(app.DB); err != nil {
+			fmt.Println("Migration failed:", err)
+			return
+		}
+	},
 }
 
 func init() {
-    rootCmd.AddCommand(migrateCmd)
+	RootCmd.AddCommand(migrateCmd)
 }

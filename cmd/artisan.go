@@ -11,7 +11,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var rootCmd = &cobra.Command{
+// RootCmd is the root command for the application.
+var RootCmd = &cobra.Command{
 	Use:   "goku",
 	Short: "Goku is a Laravel-like Go web framework",
 	Long:  `A fast, simple, and productive web framework for Go developers.`,
@@ -36,21 +37,14 @@ var routeListCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(routeListCmd)
+	RootCmd.AddCommand(routeListCmd)
+	// Other commands from the 'cmd' package are added in their own files
 }
 
-
-// Execute menjalankan root command.
+// Execute runs the root command.
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
+	if err := RootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 }
-
-// Di sini kita akan menambahkan subcommand lain seperti `serve`, `make:controller`, dll.
-func init() {
-	rootCmd.AddCommand(serveCmd) 
-	rootCmd.AddCommand(routeListCmd)
-}
-

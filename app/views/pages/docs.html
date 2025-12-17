@@ -1,0 +1,244 @@
+{{define "content"}}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+    
+    :root {
+        --go-cyan: #00ADD8;
+        --go-blue: #5DC9E2;
+        --dark-bg: #0A0E27;
+        --darker-bg: #050810;
+        --text-primary: #E2E8F0;
+        --text-secondary: #94A3B8;
+        --accent: #00ADD8;
+        --accent-glow: rgba(0, 173, 216, 0.15);
+    }
+    
+    .welcome-container {
+        position: relative;
+        font-family: 'Lexend', sans-serif;
+        background: linear-gradient(165deg, var(--darker-bg) 0%, var(--dark-bg) 50%, #0D1428 100%);
+        color: var(--text-primary);
+        min-height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin: 0;
+        overflow: hidden;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    
+    .grid-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            linear-gradient(rgba(0, 173, 216, 0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 173, 216, 0.02) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+    }
+    
+    .content-box {
+        position: relative;
+        z-index: 10;
+        text-align: left;
+        max-width: 900px;
+        padding: 60px 40px;
+    }
+
+    .main-heading {
+        font-size: clamp(2.5rem, 8vw, 5rem);
+        font-weight: 700;
+        line-height: 1.1;
+        margin: 0 0 20px 0;
+        letter-spacing: -1.5px;
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--go-blue) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 40px;
+    }
+
+    .section {
+        margin-bottom: 50px;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--go-cyan);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0, 173, 216, 0.2);
+    }
+
+    .section-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-secondary);
+        font-weight: 300;
+    }
+    
+    .section-content p {
+        margin-bottom: 16px;
+    }
+
+    code {
+        font-family: 'JetBrains Mono', monospace;
+        background-color: rgba(0, 173, 216, 0.1);
+        color: var(--go-blue);
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.9em;
+    }
+
+    pre {
+        background-color: #010409;
+        border: 1px solid rgba(0, 173, 216, 0.2);
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 16px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+    }
+
+    pre code {
+        background: none;
+        padding: 0;
+        color: #e6edf3;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+    
+</style>
+
+<div class="welcome-container">
+    <div class="grid-pattern"></div>
+    
+    <div class="content-box">
+        <h1 class="main-heading">Documentation</h1>
+
+        <div class="section">
+            <h2 class="section-title">Introduction</h2>
+            <div class="section-content">
+                <p>Goku is a modern web framework for Go, inspired by the elegance and developer-friendliness of frameworks like Laravel. It provides a solid foundation for building robust and performant web applications with a clean and maintainable structure.</p>
+                <p>This documentation provides a high-level overview of the framework's key concepts and features.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Project Structure</h2>
+            <div class="section-content">
+                <p>The framework follows a typical MVC (Model-View-Controller) pattern. The main directories are:</p>
+                <ul>
+                    <li><code>/app</code>: Contains the core application logic (controllers, models, services, etc.).</li>
+                    <li><code>/bootstrap</code>: Handles application initialization and bootstrapping.</li>
+                    <li><code>/cmd</code>: Defines the command-line interface (CLI) commands.</li>
+                    <li><code>/config</code>: Stores configuration files.</li>
+                    <li><code>/database</code>: Contains database-related files like migrations and seeders.</li>
+                    <li><code>/middleware</code>: For HTTP middleware.</li>
+                    <li><code>/routes</code>: Where you define your application's routes.</li>
+                    <li><code>/storage</code>: For file storage.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Routing</h2>
+            <div class="section-content">
+                <p>Routing is handled by the powerful <code>chi</code> router. Routes are defined in <code>routes/web.go</code>.</p>
+                <p>Here's an example of how to define a route:</p>
+                <pre><code>// routes/web.go
+package routes
+
+import (
+    "github.com/go-chi/chi/v5"
+    "github.com/your-username/goku-framework/app/controllers"
+)
+
+func RegisterWebRoutes(r *chi.Mux, homeController *controllers.HomeController) {
+    r.Get("/", homeController.Index)
+}
+</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Controllers</h2>
+            <div class="section-content">
+                <p>Controllers are responsible for handling incoming HTTP requests and returning a response. They are located in the <code>app/controllers</code> directory.</p>
+                <p>A controller method typically receives a request, interacts with the model or other services, and returns a view.</p>
+                <pre><code>// app/controllers/HomeController.go
+package controllers
+
+import (
+    "net/http"
+    "github.com/your-username/goku-framework/app/services"
+)
+
+type HomeController struct {
+    view *services.ViewService
+}
+
+func NewHomeController(view *services.ViewService) *HomeController {
+    return &HomeController{view: view}
+}
+
+func (c *HomeController) Index(w http.ResponseWriter, r *http.Request) {
+    c.view.Render(w, "home", nil)
+}
+</code></pre>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">Views</h2>
+            <div class="section-content">
+                <p>Views are located in <code>app/views</code> and are written using Go's standard <code>html/template</code> package. The <code>ViewService</code> helps in rendering these templates.</p>
+                <p>The framework uses a layout-based approach. The main layout is in <code>app/views/layouts/app.html</code>, and pages define a "content" template.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Models & ORM</h2>
+            <div class="section-content">
+                <p>Goku uses GORM as its ORM (Object-Relational Mapper), making it easy to interact with your database. Models are defined in the <code>app/models</code> directory.</p>
+                <pre><code>// app/models/User.go
+package models
+
+import "gorm.io/gorm"
+
+type User struct {
+    gorm.Model
+    Name  string
+    Email string `gorm:"unique"`
+}
+</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Configuration</h2>
+            <div class="section-content">
+                <p>Configuration is managed by Viper and stored in <code>config/app.yaml</code>. You can access configuration values throughout your application.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">CLI Commands</h2>
+            <div class="section-content">
+                <p>The framework includes a powerful CLI based on Cobra. You can create your own commands in the <code>cmd</code> directory.</p>
+                <p>Some of the built-in commands include:</p>
+                <ul>
+                    <li><code>go run main.go serve</code>: To start the web server.</li>
+                    <li><code>go run main.go make:controller [name]</code>: To create a new controller.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+{{end}}

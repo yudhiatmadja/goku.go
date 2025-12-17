@@ -18,5 +18,5 @@ var scheduleRunCmd = &cobra.Command{
 }
 
 func init() {
-    rootCmd.AddCommand(scheduleRunCmd)
+    RootCmd.AddCommand(scheduleRunCmd)
 }
