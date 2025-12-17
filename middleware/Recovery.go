@@ -13,7 +13,7 @@ func Recoverer(logger *logrus.Logger) func(http.Handler) http.Handler {
                 if err := recover(); err != nil {
                     logger.WithFields(logrus.Fields{
                         "error": err,
-                        "stack": string(debug.Stack()), // perlu import "runtime/debug"
+                        "stack": string(debug.Stack()), 
                     }).Error("Panic recovered")
 
                     http.Error(w, "Internal Server Error", http.StatusInternalServerError)

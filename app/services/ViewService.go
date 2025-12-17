@@ -25,7 +25,12 @@ func NewViewService(viewPaths ...string) *View {
 // Render now parses templates on every call, enabling live reload.
 func (v *View) Render(w http.ResponseWriter, name string, data interface{}) {
 	var allFiles []string
+
+	// Find all layout and component files
 	for _, path := range v.paths {
+		if path == "app/views/pages/" {
+			continue // Skip the pages directory from globbing
+		}
 		files, err := filepath.Glob(filepath.Join(path, "*.html"))
 		if err != nil {
 			log.Printf("Error globbing templates: %v", err)
@@ -34,6 +39,9 @@ func (v *View) Render(w http.ResponseWriter, name string, data interface{}) {
 		}
 		allFiles = append(allFiles, files...)
 	}
+
+	// Add the specific page file
+	allFiles = append(allFiles, filepath.Join("app/views/pages/", name))
 
 	tmpl, err := template.ParseFiles(allFiles...)
 	if err != nil {

@@ -1,46 +1,27 @@
 package controllers
 
 import (
-    "goku-framework/app/services"
-    "net/http"
+	"goku-framework/app/services"
+	"net/http"
 )
 
 type HomeController struct {
-    View *services.View
+	View *services.View
 }
 
 func NewHomeController() *HomeController {
-    viewService := services.NewViewService("app/views/pages/")
-    return &HomeController{View: viewService}
+	viewService := services.NewViewService("app/views/pages/")
+	return &HomeController{View: viewService}
 }
 
 func (c *HomeController) Index(w http.ResponseWriter, r *http.Request) {
 
-    data := map[string]interface{}{
-
-        "Title": "Homepage",
-
-        "Name":  "Goku User",
-
-    }
-
-    c.View.Render(w, "home.html", data)
-
-}
-
-
-
-// Installation renders the installation page.
-
-func (c *HomeController) Installation(w http.ResponseWriter, r *http.Request) {
-
 	data := map[string]interface{}{
-
-		"Title": "Installation",
-
+		"Title": "Homepage",
+		"Name":  "Goku User",
 	}
 
-	c.View.Render(w, "installation.html", data)
+	c.View.Render(w, "home.html", data)
 
 }
 
@@ -51,9 +32,7 @@ func (c *HomeController) Installation(w http.ResponseWriter, r *http.Request) {
 func (c *HomeController) Docs(w http.ResponseWriter, r *http.Request) {
 
 	data := map[string]interface{}{
-
 		"Title": "Documentation",
-
 	}
 
 	c.View.Render(w, "docs.html", data)

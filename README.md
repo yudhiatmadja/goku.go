@@ -115,7 +115,7 @@ The Goku directory structure is designed to be intuitive and scalable.
 
 ### Routing
 
-Routes are defined in `routes/web.go`. Goku uses `chi` for routing.
+Routes are defined in `routes/web.go` for web pages and `routes/api.go` for API endpoints. Goku uses `chi` for routing.
 
 **Route Parameters:**
 ```go
@@ -129,6 +129,37 @@ router.Group(func(r chi.Router) {
     r.Get("/profile", ProfileController.Show)
     r.Get("/settings", SettingsController.Index)
 })
+```
+
+### Available API Endpoints
+
+The framework includes a few example API endpoints out of the box.
+
+#### Get All Users
+
+- **Endpoint**: `GET /api/users`
+- **Description**: Retrieves a list of all users.
+- **Response**: A JSON array of user objects.
+
+**Example Request:**
+```bash
+curl -X GET http://localhost:8080/api/users
+```
+
+#### Create User
+
+- **Endpoint**: `POST /api/users`
+- **Description**: Creates a new user.
+- **Body**: A JSON object containing the user's `name` and `email`.
+- **Validation**:
+  - `name`: required, minimum 3 characters.
+  - `email`: required, must be a valid email format.
+
+**Example Request:**
+```bash
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"name": "Trunks", "email": "trunks@capsulecorp.com"}' \
+  http://localhost:8080/api/users
 ```
 
 ### Static File Serving
